@@ -1,0 +1,19 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+#todoWrapper {
+    height: 80vh;
+    width: 75%;
+    display: grid;
+    grid-template-columns: 1fr 4fr;
+}
+
+.header {
+    background-color: blue;
+    color: white;
+    font-size: 3em;
+    grid-row: 1/3;
+}
