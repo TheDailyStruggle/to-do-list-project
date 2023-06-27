@@ -49,6 +49,16 @@ body {
     align-self: flex-end;
 }
 
+.project {
+    list-style: none;
+    font-size: 1.5em;
+}
+
+.subheader,
+h2 {
+    font-size: 1.5em;
+}
+
 .addBtn {
     width: 80%;
     padding: 0.5em;
@@ -77,6 +87,20 @@ body {
     background-color: white;
 }
 
+#addListPopup {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: white;
+    margin: 2em;
+}
+
+#addListPopup>form {
+    padding: 1em;
+    margin: 1em;
+}
+
 .popupHeader {
     background-color: blue;
     font-size: 2em;
@@ -93,4 +117,13 @@ body {
 
 #addPopupForm>* {
     margin-top: 1em;
+}
+
+#addListForm {
+    display: flex;
+    flex-direction: column;
+}
+
+#addListForm>* {
+    margin-bottom: 1em;
 }
