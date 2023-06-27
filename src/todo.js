@@ -41,8 +41,12 @@ class Todo {
 // Add new to-do
 
 addTodo.addEventListener('click', (e) => {
-    addTodoPopup.classList.remove('hidden');
-    todoWrapper.classList.add('fade');
+    if (!addListPopup.classList.contains('hidden')) {
+
+    } else {
+        addTodoPopup.classList.remove('hidden');
+        todoWrapper.classList.add('fade');
+    }
 });
 
 addToDoFormButton.addEventListener('click', (e) => {
@@ -71,8 +75,12 @@ addToDoFormButton.addEventListener('click', (e) => {
 // Add new list
 
 addList.addEventListener('click', (e) => {
-    addListPopup.classList.remove('hidden');
-    todoWrapper.classList.add('fade');
+    if (!addTodoPopup.classList.contains('hidden')) {
+
+    } else {
+        addListPopup.classList.remove('hidden');
+        todoWrapper.classList.add('fade');
+    }
 });
 
 const createList = function (listName) {

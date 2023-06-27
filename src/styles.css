@@ -84,6 +84,7 @@ h2 {
     width: 50%;
     height: 50%;
     background-color: white;
+    box-shadow: 2px 2px 12px 6px #000;
 }
 
 #addListPopup {
@@ -93,6 +94,7 @@ h2 {
     transform: translate(-50%, -50%);
     background-color: white;
     margin: 2em;
+    box-shadow: 2px 2px 12px 6px #000;
 }
 
 #addListPopup>form {
