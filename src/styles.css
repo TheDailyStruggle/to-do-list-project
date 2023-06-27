@@ -25,7 +25,7 @@ body {
 .header {
     background-color: blue;
     color: white;
-    font-size: 3em;
+    font-size: 2em;
     grid-column: 1/3;
     display: flex;
     align-items: center;
@@ -126,4 +126,15 @@ h2 {
 
 #addListForm>* {
     margin-bottom: 1em;
+}
+
+.delete-button {
+    background-color: red;
+    color: white;
+}
+
+#currentList {
+    margin-left: 0.5em;
+    font-size: 1.5em;
+    font-style: italic;
 }

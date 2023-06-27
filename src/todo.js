@@ -1,5 +1,5 @@
 import _ from 'lodash';
-import './styles.css'
+import './styles.css';
 
 const addList = document.getElementById('addList');
 const addTodo = document.getElementById('addTodo');
@@ -12,11 +12,19 @@ const addToDoFormButton = document.getElementById('addTodoFormButton');
 const todoList = document.getElementById('todoList');
 const projectsList = document.querySelector('.projects');
 const homeList = document.getElementById('homeList');
+const currentList = document.getElementById('currentList');
 
 let selectedProject = 'home';
 
 const todoLists = {
-    home: [],
+    home: [{
+        description: "test dd",
+        dueDate: "2023-07-08",
+        priority: "high",
+        project: "home",
+        title: "test tt",
+    },
+    ],
 };
 
 class Todo {
@@ -56,52 +64,8 @@ addToDoFormButton.addEventListener('click', (e) => {
     addTodoPopup.classList.add('hidden');
     todoWrapper.classList.remove('fade');
 
-    createTodos();
+    createAndAppendTodos(selectedProject);
 });
-
-
-//Create To Do Elements
-
-const createTodos = function () {
-    const targetList = todoLists[selectedProject];
-
-    todoList.innerHTML = '';
-
-    targetList.forEach((todo) => {
-        const todoDiv = document.createElement('div');
-        todoDiv.classList.add('todo');
-
-        if (todo.priority === 'low') {
-            todoDiv.classList.add('low-priority');
-        } else if (todo.priority === 'medium') {
-            todoDiv.classList.add('medium-priority');
-        } else if (todo.priority === 'high') {
-            todoDiv.classList.add('high-priority');
-        }
-
-        const titleElement = document.createElement('h3');
-        titleElement.textContent = todo.title;
-        todoDiv.appendChild(titleElement);
-
-        const dateElement = document.createElement('p');
-        dateElement.textContent = todo.dueDate;
-        todoDiv.appendChild(dateElement);
-
-        const editButton = document.createElement('button');
-        editButton.textContent = 'Edit';
-        editButton.classList.add('edit-button');
-        todoDiv.appendChild(editButton);
-
-        const deleteButton = document.createElement('button');
-        deleteButton.textContent = 'Delete';
-        deleteButton.classList.add('delete-button');
-        todoDiv.appendChild(deleteButton);
-
-        todoList.appendChild(todoDiv);
-    });
-};
-
-
 
 
 // Add new list
@@ -130,6 +94,7 @@ const appendLists = function () {
                 const clickedListName = listItem.getAttribute('id');
                 selectedProject = clickedListName;
                 createAndAppendTodos(selectedProject);
+                currentList.textContent = selectedProject;
             });
         }
     }
@@ -155,14 +120,27 @@ addListForm.addEventListener('submit', (e) => {
 
 //Append To-Dos from a list to the todoList div
 
+// Delete a To-do
+
+function deleteTodo(e) {
+    console.log('deleteTodo is running');
+    const todoDiv = e.target.parentElement;
+    const index = parseInt(todoDiv.id.split('-')[1]);
+    const targetList = todoLists[selectedProject];
+    targetList.splice(index, 1);
+    todoDiv.remove();
+};
+
+
 const createAndAppendTodos = function (listName) {
     const projects = todoLists[listName];
 
     todoList.innerHTML = "";
 
-    for (const todo of projects) {
+    projects.forEach((todo, index) => {
         const todoDiv = document.createElement('div');
         todoDiv.classList.add('todo');
+        todoDiv.id = `todo-${index}`;
 
         if (todo.priority === 'low') {
             todoDiv.classList.add('low-priority');
@@ -188,15 +166,27 @@ const createAndAppendTodos = function (listName) {
         const deleteButton = document.createElement('button');
         deleteButton.textContent = 'Delete';
         deleteButton.classList.add('delete-button');
-        todoDiv.appendChild(deleteButton);
 
+        deleteButton.addEventListener('click', deleteTodo);
+
+        todoDiv.appendChild(deleteButton);
         todoList.appendChild(todoDiv);
-    }
+    });
 };
+
+
+
 
 // Home Select
 
 homeList.addEventListener('click', (e) => {
     selectedProject = 'home';
     createAndAppendTodos(selectedProject);
+    currentList.textContent = selectedProject;
 });
+
+//Load home todos on load
+
+window.addEventListener('DOMContentLoaded', (e) => {
+    createAndAppendTodos(selectedProject);
+})
