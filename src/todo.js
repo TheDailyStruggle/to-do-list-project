@@ -143,20 +143,43 @@ const createAndAppendTodos = function (listName) {
         todoDiv.id = `todo-${index}`;
 
         if (todo.priority === 'low') {
-            todoDiv.classList.add('low-priority');
-        } else if (todo.priority === 'medium') {
-            todoDiv.classList.add('medium-priority');
+            todoDiv.classList.add('lowPriority');
         } else if (todo.priority === 'high') {
-            todoDiv.classList.add('high-priority');
+            todoDiv.classList.add('highPriority');
+        } else {
+            todoDiv.classList.add('mediumPriority');
         }
+
+        const todoLeft = document.createElement('div');
+        todoLeft.classList.add('todoLeft');
+
+
+        const checkbox = document.createElement('input');
+        checkbox.setAttribute('type', 'checkbox');
+        checkbox.classList.add('todoCheckbox');
+        todoLeft.appendChild(checkbox);
+
+        checkbox.addEventListener('change', function () {
+            const todoDiv = this.closest('.todo');
+            const title = this.nextElementSibling;
+            title.classList.toggle('completed');
+            todoDiv.classList.toggle('completed');
+        });
 
         const titleElement = document.createElement('h3');
         titleElement.textContent = todo.title;
-        todoDiv.appendChild(titleElement);
+        todoLeft.appendChild(titleElement);
+
+        todoDiv.appendChild(todoLeft);
 
         const dateElement = document.createElement('p');
         dateElement.textContent = todo.dueDate;
         todoDiv.appendChild(dateElement);
+
+        const detailsButton = document.createElement('button');
+        detailsButton.textContent = 'Details';
+        detailsButton.classList.add('details-button');
+        todoDiv.appendChild(detailsButton);
 
         const editButton = document.createElement('button');
         editButton.textContent = 'Edit';
@@ -174,9 +197,6 @@ const createAndAppendTodos = function (listName) {
     });
 };
 
-
-
-
 // Home Select
 
 homeList.addEventListener('click', (e) => {
@@ -190,3 +210,4 @@ homeList.addEventListener('click', (e) => {
 window.addEventListener('DOMContentLoaded', (e) => {
     createAndAppendTodos(selectedProject);
 })
+
