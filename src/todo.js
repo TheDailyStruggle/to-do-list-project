@@ -13,6 +13,7 @@ const todoList = document.getElementById('todoList');
 const projectsList = document.querySelector('.projects');
 const homeList = document.getElementById('homeList');
 const currentList = document.getElementById('currentList');
+const detailsPopup = document.getElementById('detailsPopup');
 
 let selectedProject = 'home';
 
@@ -41,7 +42,9 @@ class Todo {
 // Add new to-do
 
 addTodo.addEventListener('click', (e) => {
-    if (!addListPopup.classList.contains('hidden')) {
+    if (!detailsPopup.classList.contains('hidden') ||
+        !addListPopup.classList.contains('hidden') ||
+        !addTodoPopup.classList.contains('hidden')) {
 
     } else {
         addTodoPopup.classList.remove('hidden');
@@ -75,7 +78,9 @@ addToDoFormButton.addEventListener('click', (e) => {
 // Add new list
 
 addList.addEventListener('click', (e) => {
-    if (!addTodoPopup.classList.contains('hidden')) {
+    if (!detailsPopup.classList.contains('hidden') ||
+        !addListPopup.classList.contains('hidden') ||
+        !addTodoPopup.classList.contains('hidden')) {
 
     } else {
         addListPopup.classList.remove('hidden');
@@ -99,10 +104,16 @@ const appendLists = function () {
             projectsList.appendChild(listItem);
 
             listItem.addEventListener('click', (e) => {
-                const clickedListName = listItem.getAttribute('id');
-                selectedProject = clickedListName;
-                createAndAppendTodos(selectedProject);
-                currentList.textContent = selectedProject;
+                if (!detailsPopup.classList.contains('hidden') ||
+                    !addListPopup.classList.contains('hidden') ||
+                    !addTodoPopup.classList.contains('hidden')) {
+                } else {
+
+                    const clickedListName = listItem.getAttribute('id');
+                    selectedProject = clickedListName;
+                    createAndAppendTodos(selectedProject);
+                    currentList.textContent = selectedProject;
+                }
             });
         }
     }
@@ -131,7 +142,6 @@ addListForm.addEventListener('submit', (e) => {
 // Delete a To-do
 
 function deleteTodo(e) {
-    console.log('deleteTodo is running');
     const todoDiv = e.target.parentElement;
     const index = parseInt(todoDiv.id.split('-')[1]);
     const targetList = todoLists[selectedProject];
@@ -189,6 +199,8 @@ const createAndAppendTodos = function (listName) {
         detailsButton.classList.add('details-button');
         todoDiv.appendChild(detailsButton);
 
+        detailsButton.addEventListener('click', viewDetails);
+
         const editButton = document.createElement('button');
         editButton.textContent = 'Edit';
         editButton.classList.add('edit-button');
@@ -198,7 +210,14 @@ const createAndAppendTodos = function (listName) {
         deleteButton.textContent = 'Delete';
         deleteButton.classList.add('delete-button');
 
-        deleteButton.addEventListener('click', deleteTodo);
+        deleteButton.addEventListener('click', (e) => {
+            if (!detailsPopup.classList.contains('hidden') ||
+                !addListPopup.classList.contains('hidden') ||
+                !addTodoPopup.classList.contains('hidden')) {
+            } else {
+                deleteTodo();
+            }
+        });
 
         todoDiv.appendChild(deleteButton);
         todoList.appendChild(todoDiv);
@@ -208,9 +227,15 @@ const createAndAppendTodos = function (listName) {
 // Home Select
 
 homeList.addEventListener('click', (e) => {
-    selectedProject = 'home';
-    createAndAppendTodos(selectedProject);
-    currentList.textContent = selectedProject;
+    if (!detailsPopup.classList.contains('hidden') ||
+        !addListPopup.classList.contains('hidden') ||
+        !addTodoPopup.classList.contains('hidden')) {
+
+    } else {
+        selectedProject = 'home';
+        createAndAppendTodos(selectedProject);
+        currentList.textContent = selectedProject;
+    }
 });
 
 //Load home todos on load
@@ -219,3 +244,41 @@ window.addEventListener('DOMContentLoaded', (e) => {
     createAndAppendTodos(selectedProject);
 })
 
+//View todo details
+
+const viewDetails = function (e) {
+    if (!detailsPopup.classList.contains('hidden') ||
+        !addListPopup.classList.contains('hidden') ||
+        !addTodoPopup.classList.contains('hidden')) {
+        return;
+    }
+
+    detailsPopup.classList.remove('hidden');
+    todoWrapper.classList.add('fade');
+
+    const todoDiv = e.target.parentElement;
+    const index = parseInt(todoDiv.id.split('-')[1]);
+
+    const { title, description, priority, dueDate } = todoLists[selectedProject][index];
+
+    const titleHeader = document.createElement('h2');
+    titleHeader.classList.add('detailsTitle');
+    titleHeader.textContent = `Title: ${title}`;
+
+    const dateP = document.createElement('p');
+    dateP.classList.add('detailsDate');
+    dateP.textContent = `Date: ${dueDate}`;
+
+    const descriptionP = document.createElement('p');
+    descriptionP.classList.add('detailsDescription');
+    descriptionP.textContent = `Description: ${description}`;
+
+    const priorityP = document.createElement('p');
+    priorityP.classList.add('detailsPriority');
+    priorityP.textContent = `Priority: ${priority}`;
+
+    detailsPopup.appendChild(titleHeader);
+    detailsPopup.appendChild(dateP);
+    detailsPopup.appendChild(descriptionP);
+    detailsPopup.appendChild(priorityP);
+};
