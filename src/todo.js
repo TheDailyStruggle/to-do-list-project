@@ -220,7 +220,7 @@ const createAndAppendTodos = function (listName) {
                 !addListPopup.classList.contains('hidden') ||
                 !addTodoPopup.classList.contains('hidden')) {
             } else {
-                deleteTodo();
+                deleteTodo(e);
             }
         });
 
