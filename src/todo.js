@@ -1,6 +1,9 @@
 import _ from 'lodash';
 import './styles.css';
 
+
+let selectedProject = 'home';
+
 const addList = document.getElementById('addList');
 const addTodo = document.getElementById('addTodo');
 const addTodoPopup = document.getElementById('addTodoPopup');
@@ -18,9 +21,6 @@ const closeDetails = document.getElementById('closeDetails');
 const todoDetails = document.getElementById('todoDetails');
 const closeAddList = document.getElementById('closeAddList');
 const closeAddTodo = document.getElementById('closeAddTodo');
-
-
-let selectedProject = 'home';
 
 const todoLists = {
     home: [{

@@ -244,3 +244,9 @@ h3.completed {
 #closeAddList:hover {
     cursor: pointer;
 }
+
+#closeDetails:active,
+#closeAddTodo:active,
+#closeAddList:active {
+    box-shadow: inset 0 0 2px 2px #000;
+}
