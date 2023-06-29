@@ -21,6 +21,9 @@ const closeDetails = document.getElementById('closeDetails');
 const todoDetails = document.getElementById('todoDetails');
 const closeAddList = document.getElementById('closeAddList');
 const closeAddTodo = document.getElementById('closeAddTodo');
+const editPopup = document.getElementById('editPopup');
+const closeEdit = document.getElementById('closeEdit');
+const todoEdit = document.getElementById('todoEdit');
 
 const todoLists = {
     home: [{
@@ -49,7 +52,8 @@ class Todo {
 addTodo.addEventListener('click', (e) => {
     if (!detailsPopup.classList.contains('hidden') ||
         !addListPopup.classList.contains('hidden') ||
-        !addTodoPopup.classList.contains('hidden')) {
+        !addTodoPopup.classList.contains('hidden') ||
+        !editPopup.classList.contains('hidden')) {
 
     } else {
         addTodoPopup.classList.remove('hidden');
@@ -85,7 +89,8 @@ addToDoFormButton.addEventListener('click', (e) => {
 addList.addEventListener('click', (e) => {
     if (!detailsPopup.classList.contains('hidden') ||
         !addListPopup.classList.contains('hidden') ||
-        !addTodoPopup.classList.contains('hidden')) {
+        !addTodoPopup.classList.contains('hidden') ||
+        !editPopup.classList.contains('hidden')) {
 
     } else {
         addListPopup.classList.remove('hidden');
@@ -104,21 +109,24 @@ const appendLists = function () {
             const listItem = document.createElement('li');
             listItem.textContent = listName;
             listItem.classList.add('project');
-            const lowerCase = listName.toLocaleLowerCase();
-            listItem.setAttribute('id', `${lowerCase}`)
+            listItem.setAttribute('id', listName)
             projectsList.appendChild(listItem);
+            console.log(listName);
 
             listItem.addEventListener('click', (e) => {
                 if (!detailsPopup.classList.contains('hidden') ||
                     !addListPopup.classList.contains('hidden') ||
-                    !addTodoPopup.classList.contains('hidden')) {
-                } else {
-
-                    const clickedListName = listItem.getAttribute('id');
-                    selectedProject = clickedListName;
+                    !addTodoPopup.classList.contains('hidden') ||
+                    !editPopup.classList.contains('hidden')) {
+                    return
+                }
+                const clickedListName = listItem.getAttribute('id');
+                selectedProject = clickedListName;
+                console.log(`${selectedProject} when list was clicked`);
+                setTimeout(() => {
                     createAndAppendTodos(selectedProject);
                     currentList.textContent = selectedProject;
-                }
+                }, 0);
             });
         }
     }
@@ -128,7 +136,7 @@ appendLists();
 
 addListForm.addEventListener('submit', (e) => {
     e.preventDefault();
-    const title = listName.value
+    const title = document.getElementById('listName').value;
 
     createList(title);
 
@@ -140,6 +148,7 @@ addListForm.addEventListener('submit', (e) => {
     addListPopup.classList.add('hidden');
     todoWrapper.classList.remove('fade');
 });
+
 
 
 //Append To-Dos from a list to the todoList div
@@ -211,6 +220,8 @@ const createAndAppendTodos = function (listName) {
         editButton.classList.add('edit-button');
         todoDiv.appendChild(editButton);
 
+        editButton.addEventListener('click', editTodo);
+
         const deleteButton = document.createElement('button');
         deleteButton.textContent = 'Delete';
         deleteButton.classList.add('delete-button');
@@ -218,7 +229,8 @@ const createAndAppendTodos = function (listName) {
         deleteButton.addEventListener('click', (e) => {
             if (!detailsPopup.classList.contains('hidden') ||
                 !addListPopup.classList.contains('hidden') ||
-                !addTodoPopup.classList.contains('hidden')) {
+                !addTodoPopup.classList.contains('hidden') ||
+                !editPopup.classList.contains('hidden')) {
             } else {
                 deleteTodo(e);
             }
@@ -229,17 +241,25 @@ const createAndAppendTodos = function (listName) {
     });
 };
 
+
 // Home Select
+
+function capitalizeFirstLetter(string) {
+    return string.charAt(0).toUpperCase() + string.slice(1);
+}
 
 homeList.addEventListener('click', (e) => {
     if (!detailsPopup.classList.contains('hidden') ||
         !addListPopup.classList.contains('hidden') ||
-        !addTodoPopup.classList.contains('hidden')) {
-
+        !addTodoPopup.classList.contains('hidden') ||
+        !editPopup.classList.contains('hidden')) {
+        return
     } else {
         selectedProject = 'home';
         createAndAppendTodos(selectedProject);
-        currentList.textContent = selectedProject;
+        const lowercaseHome = selectedProject;
+        const uppercaseHome = capitalizeFirstLetter(lowercaseHome);
+        currentList.textContent = uppercaseHome;
     }
 });
 
@@ -254,7 +274,8 @@ window.addEventListener('DOMContentLoaded', (e) => {
 const viewDetails = function (e) {
     if (!detailsPopup.classList.contains('hidden') ||
         !addListPopup.classList.contains('hidden') ||
-        !addTodoPopup.classList.contains('hidden')) {
+        !addTodoPopup.classList.contains('hidden') ||
+        !editPopup.classList.contains('hidden')) {
         return;
     }
 
@@ -288,6 +309,142 @@ const viewDetails = function (e) {
     todoDetails.appendChild(priorityP);
 };
 
+//Edit a To-do
+
+function editTodo(e) {
+    if (!detailsPopup.classList.contains('hidden') ||
+        !addListPopup.classList.contains('hidden') ||
+        !addTodoPopup.classList.contains('hidden') ||
+        !editPopup.classList.contains('hidden')) {
+        return;
+    }
+    editPopup.classList.remove('hidden');
+    todoEdit.classList.add('displayFlex');
+    todoWrapper.classList.add('fade');
+
+    const todoDiv = e.target.parentElement;
+    const index = parseInt(todoDiv.id.split('-')[1]);
+
+    const { title, description, priority, dueDate } = todoLists[selectedProject][index];
+
+    const editTitleLabel = document.createElement('label');
+    editTitleLabel.setAttribute('for', 'editTitleInput');
+    editTitleLabel.textContent = 'Title: ';
+
+    const editTitleInput = document.createElement('input');
+    editTitleInput.setAttribute('id', 'editTitleInput');
+    editTitleInput.value = title;
+
+    const editDescriptionLabel = document.createElement('label');
+    editDescriptionLabel.setAttribute('for', 'editDescriptionInput');
+    editDescriptionLabel.textContent = 'Description: ';
+
+    const editDescriptionInput = document.createElement('input');
+    editDescriptionInput.setAttribute('type', 'textarea');
+    editDescriptionInput.setAttribute('id', 'editDescriptionInput');
+    editDescriptionInput.value = description;
+
+    const editPriorityFieldset = document.createElement('fieldset');
+    editPriorityFieldset.setAttribute('id', 'editPriorityFieldset');
+
+    const editLegend = document.createElement('legend');
+    editLegend.textContent = 'Priority: ';
+
+    const radioInputLow = document.createElement('input');
+    radioInputLow.setAttribute('type', 'radio');
+    radioInputLow.setAttribute('id', 'low');
+    radioInputLow.setAttribute('value', 'low');
+    radioInputLow.setAttribute('name', 'priority');
+    if (priority === 'low') {
+        radioInputLow.checked = true;
+    }
+
+    const labelLow = document.createElement('label');
+    labelLow.setAttribute('for', 'low');
+    labelLow.textContent = 'Low';
+
+    const radioInputStandard = document.createElement('input');
+    radioInputStandard.setAttribute('type', 'radio');
+    radioInputStandard.setAttribute('id', 'standard');
+    radioInputStandard.setAttribute('value', 'standard');
+    radioInputStandard.setAttribute('name', 'priority');
+    if (priority === 'standard') {
+        radioInputStandard.checked = true;
+    }
+
+    const labelStandard = document.createElement('label');
+    labelStandard.setAttribute('for', 'standard');
+    labelStandard.textContent = 'Standard';
+
+    const radioInputHigh = document.createElement('input');
+    radioInputHigh.setAttribute('type', 'radio');
+    radioInputHigh.setAttribute('id', 'high');
+    radioInputHigh.setAttribute('value', 'high');
+    radioInputHigh.setAttribute('name', 'priority');
+    if (priority === 'high') {
+        radioInputHigh.checked = true;
+    }
+
+    const labelHigh = document.createElement('label');
+    labelHigh.setAttribute('for', 'high');
+    labelHigh.textContent = 'High';
+
+    editPriorityFieldset.appendChild(editLegend);
+    editPriorityFieldset.appendChild(radioInputLow);
+    editPriorityFieldset.appendChild(labelLow);
+    editPriorityFieldset.appendChild(radioInputStandard);
+    editPriorityFieldset.appendChild(labelStandard);
+    editPriorityFieldset.appendChild(radioInputHigh);
+    editPriorityFieldset.appendChild(labelHigh);
+
+    const editDateLabel = document.createElement('label');
+    editDateLabel.setAttribute('for', 'editDateInput');
+    editDateLabel.textContent = "Date: ";
+
+    const editDateInput = document.createElement('input');
+    editDateInput.setAttribute('id', 'editDateInput');
+    editDateInput.setAttribute('type', 'date');
+    editDateInput.value = dueDate;
+
+    const submitEdit = document.createElement('button')
+    submitEdit.setAttribute('id', 'submitEdit');
+    submitEdit.textContent = "Save";
+    submitEdit.addEventListener('click', (e) => {
+        e.preventDefault();
+        const editedTitle = document.getElementById('editTitleInput').value;
+        const editedDescription = document.getElementById('editDescriptionInput').value;
+        const editedPriority = document.querySelector('input[name="priority"]:checked').value;
+        const editedDueDate = document.getElementById('editDateInput').value;
+
+        const targetList = todoLists[selectedProject];
+        const editedTodo = targetList[index];
+
+        editedTodo.title = editedTitle;
+        editedTodo.description = editedDescription;
+        editedTodo.priority = editedPriority;
+        editedTodo.dueDate = editedDueDate;
+
+        createAndAppendTodos(selectedProject);
+
+        editPopup.classList.add('hidden');
+        todoEdit.classList.remove('displayFlex');
+        todoWrapper.classList.remove('fade');
+        todoEdit.innerHTML = "";
+    });
+
+
+    todoEdit.appendChild(editTitleLabel);
+    todoEdit.appendChild(editTitleInput);
+    todoEdit.appendChild(editDescriptionLabel);
+    todoEdit.appendChild(editDescriptionInput);
+    todoEdit.appendChild(editLegend);
+    todoEdit.appendChild(editPriorityFieldset);
+    todoEdit.appendChild(editDateLabel);
+    todoEdit.appendChild(editDateInput);
+    todoEdit.appendChild(submitEdit)
+};
+
+
 // Close details with a click
 
 closeDetails.addEventListener('click', (e) => {
@@ -312,10 +469,23 @@ closeAddList.addEventListener('click', (e) => {
 // Close add todo
 
 closeAddTodo.addEventListener('click', (e) => {
-    if (!closeAddTodo.classList.contains('hidden')) {
+    if (!addTodoPopup.classList.contains('hidden')) {
         addTodoPopup.classList.add('hidden');
         todoWrapper.classList.remove('fade');
 
         addPopupForm.reset();
+    }
+});
+
+// Close add edit
+
+closeEdit.addEventListener('click', (e) => {
+    if (!editPopup.classList.contains('hidden')) {
+        editPopup.classList.add('hidden');
+        todoEdit.classList.remove('displayFlex');
+        todoWrapper.classList.remove('fade');
+
+
+        todoEdit.innerHTML = "";
     }
 });

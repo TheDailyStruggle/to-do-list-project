@@ -201,7 +201,8 @@ h3.completed {
     border-left: 5px solid yellow;
 }
 
-#detailsPopup {
+#detailsPopup,
+#editPopup {
     position: absolute;
     top: 50%;
     left: 50%;
@@ -211,8 +212,14 @@ h3.completed {
     box-shadow: 2px 2px 12px 6px #000;
 }
 
-#todoDetails>* {
+#todoDetails>*,
+#todoEdit>* {
     margin-bottom: 1em;
+}
+
+.displayFlex {
+    display: flex;
+    flex-direction: column;
 }
 
 .todoCheckbox {
@@ -222,7 +229,8 @@ h3.completed {
 
 #closeDetails,
 #closeAddTodo,
-#closeAddList {
+#closeAddList,
+#closeEdit {
     width: 1.5em;
     height: 1.5em;
     border-radius: 50%;
@@ -249,4 +257,8 @@ h3.completed {
 #closeAddTodo:active,
 #closeAddList:active {
     box-shadow: inset 0 0 2px 2px #000;
+}
+
+textarea {
+    overflow: auto;
 }
