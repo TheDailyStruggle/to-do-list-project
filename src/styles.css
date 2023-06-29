@@ -211,11 +211,36 @@ h3.completed {
     box-shadow: 2px 2px 12px 6px #000;
 }
 
-#detailsPopup>* {
+#todoDetails>* {
     margin-bottom: 1em;
 }
 
 .todoCheckbox {
     height: 1.5em;
     width: 1.5em;
+}
+
+#closeDetails,
+#closeAddTodo,
+#closeAddList {
+    width: 1.5em;
+    height: 1.5em;
+    border-radius: 50%;
+    position: absolute;
+    top: 0;
+    right: 0;
+    background-color: red;
+    color: white;
+    display: grid;
+    place-items: center;
+    font-weight: bold;
+    box-shadow: 0 0 2px 2px #000;
+    margin-top: -0.5em;
+    margin-right: -0.5em;
+}
+
+#closeDetails:hover,
+#closeAddTodo:hover,
+#closeAddList:hover {
+    cursor: pointer;
 }

@@ -14,6 +14,11 @@ const projectsList = document.querySelector('.projects');
 const homeList = document.getElementById('homeList');
 const currentList = document.getElementById('currentList');
 const detailsPopup = document.getElementById('detailsPopup');
+const closeDetails = document.getElementById('closeDetails');
+const todoDetails = document.getElementById('todoDetails');
+const closeAddList = document.getElementById('closeAddList');
+const closeAddTodo = document.getElementById('closeAddTodo');
+
 
 let selectedProject = 'home';
 
@@ -277,8 +282,40 @@ const viewDetails = function (e) {
     priorityP.classList.add('detailsPriority');
     priorityP.textContent = `Priority: ${priority}`;
 
-    detailsPopup.appendChild(titleHeader);
-    detailsPopup.appendChild(dateP);
-    detailsPopup.appendChild(descriptionP);
-    detailsPopup.appendChild(priorityP);
+    todoDetails.appendChild(titleHeader);
+    todoDetails.appendChild(dateP);
+    todoDetails.appendChild(descriptionP);
+    todoDetails.appendChild(priorityP);
 };
+
+// Close details with a click
+
+closeDetails.addEventListener('click', (e) => {
+    if (!detailsPopup.classList.contains('hidden')) {
+        detailsPopup.classList.add('hidden');
+        todoWrapper.classList.remove('fade');
+        todoDetails.innerHTML = "";
+    }
+});
+
+// Close add list
+
+closeAddList.addEventListener('click', (e) => {
+    if (!addListPopup.classList.contains('hidden')) {
+        addListPopup.classList.add('hidden');
+        todoWrapper.classList.remove('fade');
+
+        addListForm.reset();
+    }
+});
+
+// Close add todo
+
+closeAddTodo.addEventListener('click', (e) => {
+    if (!closeAddTodo.classList.contains('hidden')) {
+        addTodoPopup.classList.add('hidden');
+        todoWrapper.classList.remove('fade');
+
+        addPopupForm.reset();
+    }
+});
