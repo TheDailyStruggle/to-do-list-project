@@ -24,6 +24,7 @@ const closeAddTodo = document.getElementById('closeAddTodo');
 const editPopup = document.getElementById('editPopup');
 const closeEdit = document.getElementById('closeEdit');
 const todoEdit = document.getElementById('todoEdit');
+const overlay = document.getElementById('overlay');
 
 const todoLists = {
     home: [{
@@ -57,7 +58,7 @@ addTodo.addEventListener('click', (e) => {
 
     } else {
         addTodoPopup.classList.remove('hidden');
-        todoWrapper.classList.add('fade');
+        overlay.classList.add('fade');
     }
 });
 
@@ -78,7 +79,7 @@ addToDoFormButton.addEventListener('click', (e) => {
     console.log(todoLists.home);
 
     addTodoPopup.classList.add('hidden');
-    todoWrapper.classList.remove('fade');
+    overlay.classList.remove('fade');
 
     createAndAppendTodos(selectedProject);
 });
@@ -94,7 +95,7 @@ addList.addEventListener('click', (e) => {
 
     } else {
         addListPopup.classList.remove('hidden');
-        todoWrapper.classList.add('fade');
+        overlay.classList.add('fade');
     }
 });
 
@@ -146,7 +147,7 @@ addListForm.addEventListener('submit', (e) => {
     addListForm.reset();
 
     addListPopup.classList.add('hidden');
-    todoWrapper.classList.remove('fade');
+    overlay.classList.remove('fade');
 });
 
 
@@ -280,7 +281,7 @@ const viewDetails = function (e) {
     }
 
     detailsPopup.classList.remove('hidden');
-    todoWrapper.classList.add('fade');
+    overlay.classList.add('fade');
 
     const todoDiv = e.target.parentElement;
     const index = parseInt(todoDiv.id.split('-')[1]);
@@ -320,7 +321,7 @@ function editTodo(e) {
     }
     editPopup.classList.remove('hidden');
     todoEdit.classList.add('displayFlex');
-    todoWrapper.classList.add('fade');
+    overlay.classList.add('fade');
 
     const todoDiv = e.target.parentElement;
     const index = parseInt(todoDiv.id.split('-')[1]);
@@ -333,6 +334,7 @@ function editTodo(e) {
 
     const editTitleInput = document.createElement('input');
     editTitleInput.setAttribute('id', 'editTitleInput');
+    editTitleInput.classList.add('inputBox');
     editTitleInput.value = title;
 
     const editDescriptionLabel = document.createElement('label');
@@ -342,10 +344,12 @@ function editTodo(e) {
     const editDescriptionInput = document.createElement('input');
     editDescriptionInput.setAttribute('type', 'textarea');
     editDescriptionInput.setAttribute('id', 'editDescriptionInput');
+    editDescriptionInput.classList.add('inputBox');
     editDescriptionInput.value = description;
 
     const editPriorityFieldset = document.createElement('fieldset');
     editPriorityFieldset.setAttribute('id', 'editPriorityFieldset');
+    editPriorityFieldset.classList.add('todoRadioButtons');
 
     const editLegend = document.createElement('legend');
     editLegend.textContent = 'Priority: ';
@@ -404,6 +408,7 @@ function editTodo(e) {
     const editDateInput = document.createElement('input');
     editDateInput.setAttribute('id', 'editDateInput');
     editDateInput.setAttribute('type', 'date');
+    editDateInput.classList.add('inputBox');
     editDateInput.value = dueDate;
 
     const submitEdit = document.createElement('button')
@@ -428,7 +433,7 @@ function editTodo(e) {
 
         editPopup.classList.add('hidden');
         todoEdit.classList.remove('displayFlex');
-        todoWrapper.classList.remove('fade');
+        overlay.classList.remove('fade');
         todoEdit.innerHTML = "";
     });
 
@@ -450,7 +455,7 @@ function editTodo(e) {
 closeDetails.addEventListener('click', (e) => {
     if (!detailsPopup.classList.contains('hidden')) {
         detailsPopup.classList.add('hidden');
-        todoWrapper.classList.remove('fade');
+        overlay.classList.remove('fade');
         todoDetails.innerHTML = "";
     }
 });
@@ -460,7 +465,7 @@ closeDetails.addEventListener('click', (e) => {
 closeAddList.addEventListener('click', (e) => {
     if (!addListPopup.classList.contains('hidden')) {
         addListPopup.classList.add('hidden');
-        todoWrapper.classList.remove('fade');
+        overlay.classList.remove('fade');
 
         addListForm.reset();
     }
@@ -471,7 +476,7 @@ closeAddList.addEventListener('click', (e) => {
 closeAddTodo.addEventListener('click', (e) => {
     if (!addTodoPopup.classList.contains('hidden')) {
         addTodoPopup.classList.add('hidden');
-        todoWrapper.classList.remove('fade');
+        overlay.classList.remove('fade');
 
         addPopupForm.reset();
     }
@@ -483,7 +488,7 @@ closeEdit.addEventListener('click', (e) => {
     if (!editPopup.classList.contains('hidden')) {
         editPopup.classList.add('hidden');
         todoEdit.classList.remove('displayFlex');
-        todoWrapper.classList.remove('fade');
+        overlay.classList.remove('fade');
 
 
         todoEdit.innerHTML = "";
