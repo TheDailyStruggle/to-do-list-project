@@ -189,7 +189,7 @@ h3.completed {
 }
 
 .highPriority {
-    border-left: 10px solid yellow;
+    border-left: 10px solid red;
 }
 
 .mediumPriority {
@@ -197,7 +197,7 @@ h3.completed {
 }
 
 .lowPriority {
-    border-left: 10px solid green;
+    border-left: 10px solid yellow;
 }
 
 #detailsPopup,
@@ -206,10 +206,15 @@ h3.completed {
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    padding: 1em;
     background-color: white;
     box-shadow: 2px 2px 12px 6px #000;
 }
+
+#todoDetails,
+#todoEdit {
+    padding: 1em;
+}
+
 
 #todoDetails>*,
 #todoEdit>* {
@@ -342,4 +347,13 @@ textarea {
     background-color: red;
     color: #fff;
     box-shadow: 0 0 2px 2px black;
+}
+
+#addTodoFormButton,
+#addListFormButton,
+#submitEdit {
+    background-color: #f25992;
+    font-size: 18px;
+    padding: 0.5em;
+    color: white;
 }

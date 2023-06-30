@@ -76,7 +76,6 @@ addToDoFormButton.addEventListener('click', (e) => {
     targetList.push(newTodo);
 
     addPopupForm.reset();
-    console.log(todoLists.home);
 
     addTodoPopup.classList.add('hidden');
     overlay.classList.remove('fade');
@@ -101,7 +100,6 @@ addList.addEventListener('click', (e) => {
 
 const createList = function (listName) {
     todoLists[listName] = [];
-    console.log(todoLists);
 };
 
 const appendLists = function () {
@@ -112,7 +110,6 @@ const appendLists = function () {
             listItem.classList.add('project');
             listItem.setAttribute('id', listName)
             projectsList.appendChild(listItem);
-            console.log(listName);
 
             listItem.addEventListener('click', (e) => {
                 if (!detailsPopup.classList.contains('hidden') ||
@@ -123,7 +120,6 @@ const appendLists = function () {
                 }
                 const clickedListName = listItem.getAttribute('id');
                 selectedProject = clickedListName;
-                console.log(`${selectedProject} when list was clicked`);
                 setTimeout(() => {
                     createAndAppendTodos(selectedProject);
                     currentList.textContent = selectedProject;
@@ -356,20 +352,20 @@ function editTodo(e) {
 
     const radioInputLow = document.createElement('input');
     radioInputLow.setAttribute('type', 'radio');
-    radioInputLow.setAttribute('id', 'low');
+    radioInputLow.setAttribute('id', 'editLow');
     radioInputLow.setAttribute('value', 'low');
     radioInputLow.setAttribute('name', 'priority');
-    if (priority === 'low') {
+    if (priority.trim().toLowerCase() === 'low') {
         radioInputLow.checked = true;
     }
 
     const labelLow = document.createElement('label');
-    labelLow.setAttribute('for', 'low');
+    labelLow.setAttribute('for', 'editLow');
     labelLow.textContent = 'Low';
 
     const radioInputStandard = document.createElement('input');
     radioInputStandard.setAttribute('type', 'radio');
-    radioInputStandard.setAttribute('id', 'standard');
+    radioInputStandard.setAttribute('id', 'editStandard');
     radioInputStandard.setAttribute('value', 'standard');
     radioInputStandard.setAttribute('name', 'priority');
     if (priority === 'standard') {
@@ -377,12 +373,12 @@ function editTodo(e) {
     }
 
     const labelStandard = document.createElement('label');
-    labelStandard.setAttribute('for', 'standard');
+    labelStandard.setAttribute('for', 'editStandard');
     labelStandard.textContent = 'Standard';
 
     const radioInputHigh = document.createElement('input');
     radioInputHigh.setAttribute('type', 'radio');
-    radioInputHigh.setAttribute('id', 'high');
+    radioInputHigh.setAttribute('id', 'editHigh');
     radioInputHigh.setAttribute('value', 'high');
     radioInputHigh.setAttribute('name', 'priority');
     if (priority === 'high') {
@@ -390,7 +386,7 @@ function editTodo(e) {
     }
 
     const labelHigh = document.createElement('label');
-    labelHigh.setAttribute('for', 'high');
+    labelHigh.setAttribute('for', 'editHigh');
     labelHigh.textContent = 'High';
 
     editPriorityFieldset.appendChild(editLegend);
@@ -414,20 +410,29 @@ function editTodo(e) {
     const submitEdit = document.createElement('button')
     submitEdit.setAttribute('id', 'submitEdit');
     submitEdit.textContent = "Save";
-    submitEdit.addEventListener('click', (e) => {
+    todoEdit.addEventListener('submit', (e) => {
         e.preventDefault();
-        const editedTitle = document.getElementById('editTitleInput').value;
-        const editedDescription = document.getElementById('editDescriptionInput').value;
-        const editedPriority = document.querySelector('input[name="priority"]:checked').value;
-        const editedDueDate = document.getElementById('editDateInput').value;
+
+        let editedPriority = "";
+
+        const editedTitle = editTitleInput.value;
+        const editedDescription = editDescriptionInput.value;
+        if (radioInputLow.checked) {
+            editedPriority = 'low';
+        } else if (radioInputStandard.checked) {
+            editedPriority = 'standard';
+        } else if (radioInputHigh.checked) {
+            editedPriority = 'high';
+        };
+        const editedDueDate = editDateInput.value;
 
         const targetList = todoLists[selectedProject];
         const editedTodo = targetList[index];
-
         editedTodo.title = editedTitle;
         editedTodo.description = editedDescription;
         editedTodo.priority = editedPriority;
         editedTodo.dueDate = editedDueDate;
+
 
         createAndAppendTodos(selectedProject);
 
@@ -435,6 +440,9 @@ function editTodo(e) {
         todoEdit.classList.remove('displayFlex');
         overlay.classList.remove('fade');
         todoEdit.innerHTML = "";
+
+        todoEdit.reset();
+
     });
 
 
