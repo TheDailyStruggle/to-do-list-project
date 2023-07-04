@@ -201,7 +201,6 @@ const createAndAppendTodos = function (listName) {
 
             title.classList.toggle('completed');
             todoDiv.classList.toggle('completed');
-            console.log(todoLists);
         });
 
         const titleElement = document.createElement('h3');
