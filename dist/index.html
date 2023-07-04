@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>To-Do List</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
+        rel="stylesheet">
+</head>
+
+<body>
+
+    <main id="todoWrapper" class="">
+        <div class="header">
+            <h1>To-Do List /</h1><span id='currentList'>Home</span>
+        </div>
+        <div class="sidebar">
+            <h2 class="subHeader" id="homeList">Home</h2>
+            <h2 class="subHeader" id="">Your Lists:</h2>
+            <ul class="projects">
+
+            </ul>
+            <div class="sidebarButtons">
+                <button id="addList" class="addBtn">Add List</button>
+                <button id="addTodo" class="addBtn">Add To-Do</button>
+            </div>
+        </div>
+        <div class="" id="todoList"></div>
+    </main>
+    <div class="overlay" id="overlay"></div>
+
+    <div class="hidden" id="addTodoPopup">
+        <div id="closeAddTodo">X</div>
+        <div class="popupHeader">Add New To-Do</div>
+        <form action="" id="addPopupForm">
+            <label for="title">Title:</label>
+            <input type="text" required name="title" id="title" class="inputBox">
+
+            <label for="description">Description:</label>
+            <input type="textarea" name="description" id="description" class="inputBox">
+
+            <fieldset class="todoRadioButtons squaredRadioButtons">
+                <legend>Priority:</legend>
+
+                <input type="radio" id="low" value="low" name="priority">
+                <label for="low">Low</label>
+
+                <input type="radio" id="standard" value="standard" checked="checked" name="priority">
+                <label for="standard">Standard</label>
+
+                <input type="radio" id="high" value="high" name="priority">
+                <label for="high">High</label>
+            </fieldset>
+
+            <label for="date">Date:</label>
+            <input type="date" id="date" class="inputBox">
+
+            <button id="addTodoFormButton">Add To-Do</button>
+        </form>
+    </div>
+
+    <div class="hidden" id="addListPopup">
+        <div id="closeAddList">X</div>
+        <div class="popupHeader">Add New List</div>
+        <form id="addListForm">
+            <label for="listName">List Name:</label>
+            <input type="text" id="listName" name="listName" class="inputBox">
+
+            <button id="addListFormButton">Create List</button>
+        </form>
+    </div>
+
+    <div class="hidden" id="detailsPopup">
+        <div class="popupHeader">Details</div>
+        <div id="closeDetails">X</div>
+        <div id="todoDetails">
+        </div>
+    </div>
+
+    <div class="hidden" id="editPopup">
+        <div class="popupHeader">Edit</div>
+        <div id="closeEdit">X</div>
+        <form id="todoEdit">
+        </form>
+    </div>
+
+    <script src="main.js"></script>
+</body>
+
+</html>
