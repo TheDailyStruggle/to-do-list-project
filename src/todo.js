@@ -33,17 +33,19 @@ const todoLists = {
         priority: "high",
         project: "home",
         title: "test tt",
+        complete: true,
     },
     ],
 };
 
 class Todo {
-    constructor(title, description, priority, dueDate, project) {
+    constructor(title, description, priority, dueDate, project, complete = false) {
         this.title = title;
         this.description = description;
         this.priority = priority;
         this.dueDate = dueDate;
         this.project = project;
+        this.complete = complete
     }
 };
 
@@ -191,8 +193,15 @@ const createAndAppendTodos = function (listName) {
         checkbox.addEventListener('change', function () {
             const todoDiv = this.closest('.todo');
             const title = this.nextElementSibling;
+            const index = parseInt(todoDiv.id.split('-')[1]);
+            const targetList = todoLists[selectedProject];
+            const todo = targetList[index];
+
+            todo.complete = true;
+
             title.classList.toggle('completed');
             todoDiv.classList.toggle('completed');
+            console.log(todoLists);
         });
 
         const titleElement = document.createElement('h3');
@@ -233,8 +242,17 @@ const createAndAppendTodos = function (listName) {
             }
         });
 
+        if (todo.complete === true) {
+            titleElement.classList.add('completed');
+            todoDiv.classList.add('completed');
+            checkbox.checked = true;
+        }
+
         todoDiv.appendChild(deleteButton);
         todoList.appendChild(todoDiv);
+
+
+
     });
 };
 
@@ -432,6 +450,7 @@ function editTodo(e) {
         editedTodo.description = editedDescription;
         editedTodo.priority = editedPriority;
         editedTodo.dueDate = editedDueDate;
+        editedTodo.complete = checkbox.checked;
 
 
         createAndAppendTodos(selectedProject);
